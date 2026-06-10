@@ -1,77 +1,61 @@
-const canvas = document.getElementById("trafficCanvas");
-const ctx = canvas.getContext("2d");
+let vehicle = document.getElementById("vehicle");
+let statusText = document.getElementById("status");
+let countText = document.getElementById("count");
 
-let animationId;
-let vehicles = [];
+let position = 0;
+let vehicleCount = 0;
+let interval;
+let signalIndex = 0;
 
-class Vehicle {
-    constructor(x, y, speed, color) {
-        this.x = x;
-        this.y = y;
-        this.speed = speed;
-        this.color = color;
+const signals = [
+    { color: "red", text: "STOP" },
+    { color: "green", text: "GO" },
+    { color: "yellow", text: "WAIT" }
+];
+
+function updateSignal() {
+
+    document.getElementById("red").classList.remove("active");
+    document.getElementById("yellow").classList.remove("active");
+    document.getElementById("green").classList.remove("active");
+
+    document
+        .getElementById(signals[signalIndex].color)
+        .classList.add("active");
+
+    statusText.innerText = signals[signalIndex].text;
+
+    signalIndex = (signalIndex + 1) % signals.length;
+}
+
+function moveVehicle() {
+
+    const currentSignal =
+        signals[(signalIndex + 2) % signals.length].color;
+
+    if (currentSignal === "green") {
+        position += 5;
+        vehicle.style.left = position + "px";
     }
 
-    move() {
-        this.y += this.speed;
-    }
-
-    draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, 30, 15);
+    if (position > 1000) {
+        position = -50;
+        vehicleCount++;
+        countText.innerText = vehicleCount;
     }
 }
 
-function drawRoad() {
-    ctx.fillStyle = "#444";
-    ctx.fillRect(400, 0, 200, 800);
+function startSimulation() {
 
-    ctx.strokeStyle = "yellow";
-    ctx.setLineDash([10, 10]);
-    ctx.beginPath();
-    ctx.moveTo(500, 0);
-    ctx.lineTo(500, 800);
-    ctx.stroke();
+    interval = setInterval(() => {
+        updateSignal();
+    }, 3000);
+
+    setInterval(() => {
+        moveVehicle();
+    }, 50);
 }
 
-function spawnVehicle() {
-    const x = 450;
-    const speed = 2 + Math.random() * 3;
-
-    vehicles.push(
-        new Vehicle(
-            x,
-            -20,
-            speed,
-            `rgb(${Math.random()*255},
-                 ${Math.random()*255},
-                 ${Math.random()*255})`
-        )
-    );
+function stopSimulation() {
+    clearInterval(interval);
 }
-
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawRoad();
-
-    vehicles.forEach(vehicle => {
-        vehicle.move();
-        vehicle.draw();
-    });
-
-    vehicles = vehicles.filter(v => v.y < canvas.height);
-
-    animationId = requestAnimationFrame(update);
-}
-
-document.getElementById("startBtn").addEventListener("click", () => {
-    clearInterval(window.vehicleSpawner);
-    window.vehicleSpawner = setInterval(spawnVehicle, 1000);
-    update();
-});
-
-document.getElementById("stopBtn").addEventListener("click", () => {
-    cancelAnimationFrame(animationId);
-    clearInterval(window.vehicleSpawner);
-});
