@@ -3,20 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Traffic Simulation</title>
+    <title>Smart Traffic Management System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Smart Traffic Management System</h1>
+<header>
+    <h1>🚦 Smart Traffic Management System</h1>
+</header>
 
-    <div class="controls">
-        <button id="startBtn">Start Simulation</button>
-        <button id="stopBtn">Stop Simulation</button>
+<div class="dashboard">
+    <div class="signal">
+        <div class="light red active" id="red"></div>
+        <div class="light yellow" id="yellow"></div>
+        <div class="light green" id="green"></div>
     </div>
 
-    <canvas id="trafficCanvas" width="1000" height="800"></canvas>
+    <div class="info">
+        <h2>Traffic Status</h2>
+        <p id="status">STOP</p>
+        <p>Vehicles Passed: <span id="count">0</span></p>
+    </div>
+</div>
 
-    <script src="script.js"></script>
+<div class="road">
+    <div id="vehicle" class="vehicle">🚗</div>
+</div>
+
+<div class="controls">
+    <button onclick="startSimulation()">Start</button>
+    <button onclick="stopSimulation()">Stop</button>
+</div>
+
+<script src="script.js"></script>
+
 </body>
 </html>
