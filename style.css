@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1c1c1c;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+.controls {
+    margin-bottom: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#startBtn {
+    background: green;
+    color: white;
+}
+
+#stopBtn {
+    background: red;
+    color: white;
+}
+
+canvas {
+    border: 2px solid white;
+    background: #2f4f2f;
+}
